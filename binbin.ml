@@ -239,6 +239,32 @@ let dmap f b1 b2 =
     in traverse f empty b1 b2
 ;;
 
+let logical_operation op =
+    fun bit1 bit2 ->
+        let s1 = (unsafe_s bit1) in
+        let s2 = (unsafe_s bit2) in
+        let exec = op (char_to_int s1.[0]) (char_to_int s2.[0]) in
+        (unsafe_b (string_of_int exec))
+;;
+
+let b_xor b1 b2 =
+    let padded_b1, padded_b2 = normalize b1 b2 in
+    let xoring = logical_operation (lxor) in
+    dmap xoring padded_b1 padded_b2 
+;;
+
+let b_or b1 b2 =
+    let padded_b1, padded_b2 = normalize b1 b2 in
+    let oring = logical_operation (lor) in
+    dmap oring padded_b1 padded_b2
+;;
+
+let b_and b1 b2 =
+    let padded_b1, padded_b2 = normalize b1 b2 in
+    let anding = logical_operation (land) in
+    dmap anding padded_b1 padded_b2
+;;
+
 let flip b =
     let upper_bound = (make (size b) (unsafe_b "1")) in
     b_xor b upper_bound

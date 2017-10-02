@@ -35,6 +35,12 @@ val concat : t -> t -> t
 
 val normalize : t -> t -> t * t
 
+val b_xor : t -> t -> t
+
+val b_or : t -> t -> t
+
+val b_and : t -> t -> t
+
 
 val map : (t -> t) -> t -> t
 
