@@ -11,6 +11,18 @@ let unsafe_b str = (Binstr str);;
 
 let size binstr = String.length (unsafe_s binstr);;
 
+(** UTILITIES AND HELPERS **) 
+
+let is_bit_on bit = bit = (Binstr "1");;
+
+let is_bit_off bit = bit = (Binstr "0");;
+
+let distance_to_byte b =
+    let len = size b in
+    if len < 8 then (8 - len)
+    else (len mod 8)
+;;
+
 let ipow n x = (float_of_int n) ** (float_of_int x) |> int_of_float;;
 
 let char_to_int c = if c = '0' then 0 else 1;;
@@ -29,7 +41,29 @@ let remove_bits i b =
         raise (invalid_arg "Illegal operation: cannot be asked to remove more bits than binstring size!\n")
     else if i <= 0 then b
     else (unsafe_b (String.sub (unsafe_s b) i (len-i)))
+;;
+
+let char_bit_to_binstr c =
+    if c <> '0' && c <> '1' then
+        raise (invalid_arg "Invalid character bit!\n")
+    else unsafe_b (char_to_string c)
+;;
+
+(** IMPLEMENTATION **)
 let concat b1 b2 = (unsafe_b ((unsafe_s b1) ^ (unsafe_s b2)));;
+
+let pad_left k b =
+    let bs = (unsafe_s b) in
+    let rec pad k bs =
+        if k <= 0 then bs
+        else (pad (k-1) ("0" ^ bs))
+    in (unsafe_b (pad k bs))
+;;
+
+let byte_pad_left b =
+    let padding = distance_to_byte b in
+    pad_left padding b
+;;
 
 let of_int n =
     let reduce_int i = if i = 0 then 0 else 1 in
