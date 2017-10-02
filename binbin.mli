@@ -14,6 +14,13 @@ val to_char : t -> char
 
 val to_ascii : t -> string
 
+
+val pad_left : int -> t -> t
+
+val pad_right : int -> t -> t
+
+val concat : t -> t -> t
+
 val unsafe_s : t -> string
 
 val unsafe_b : string -> t
