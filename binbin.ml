@@ -154,6 +154,14 @@ let normalize b1 b2 =
     else ((pad_left (abs delta) b1), b2)
 ;;
 
+let take i b =
+    if (size b) < i then
+        raise (invalid_arg "Out-of-bound: cannot take bit at provided index!\n")
+    else
+        let s = unsafe_s b in
+        (char_bit_to_binstr s.[i-1])
+;;
+
 
 let msbit b =
     if (size b) = 0 then
