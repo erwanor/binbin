@@ -65,6 +65,19 @@ let byte_pad_left b =
     pad_left padding b
 ;;
 
+let pad_right k b =
+    let bs = (unsafe_s b) in
+    let rec pad k bs =
+        if k <= 0 then bs
+        else (pad (k-1) (bs ^ "0"))
+    in (unsafe_b (pad k bs))
+;;
+
+let byte_pad_right b =
+    let padding = distance_to_byte b in
+    pad_right padding b
+;;
+
 let of_int n =
     let reduce_int i = if i = 0 then 0 else 1 in
     let rec convert pos binstr remainder =
