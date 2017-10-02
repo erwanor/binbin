@@ -14,6 +14,17 @@ val to_char : t -> char
 
 val to_ascii : t -> string
 
+val take : int -> t -> t
+
+val make : int -> t -> t
+
+val flip : t -> t
+
+val flip_bit_at : int -> t -> t
+
+val msbit : t -> t
+
+val lsbit : t -> t
 
 val pad_left : int -> t -> t
 

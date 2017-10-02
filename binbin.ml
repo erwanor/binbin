@@ -154,3 +154,29 @@ let normalize b1 b2 =
     else ((pad_left (abs delta) b1), b2)
 ;;
 
+
+let msbit b =
+    if (size b) = 0 then
+        raise (invalid_arg "Empty binary string!\n")
+    else (take 1 b)
+;;
+
+let lsbit b =
+    if (size b) = 0 then
+        raise (invalid_arg "Empty binary string!\n")
+    else (take (size b) b)
+;;
+   
+let flip b =
+    let upper_bound = (make (size b) (unsafe_b "1")) in
+    b_xor b upper_bound
+;;
+
+let flip_bit_at target b =
+    if target > (size b) then
+        raise (invalid_arg "Out-of-bound: bit at position cannot be flipped!\n");
+    let flipper = fun index bit ->
+        if target = (index+1) then (flip bit)
+        else bit
+    in mapi flipper b
+;;
