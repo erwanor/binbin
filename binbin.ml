@@ -199,6 +199,46 @@ let lsbit b =
     else (take (size b) b)
 ;;
    
+let mapi f b =
+    let rec traverse f pos acc b =
+        if (size b) = 0 then acc
+        else begin
+            let bit = msbit b in
+            let result = f pos bit in
+            let remainder = remove_bits 1 b in
+            traverse f (pos+1) (concat acc result) remainder
+        end
+    in traverse f 0 empty b
+;;
+
+let map f b =
+    let rec traverse f acc b =
+        if (size b) = 0 then acc
+        else begin
+            let bit = msbit b in
+            let result = f bit in
+            let remainder = remove_bits 1 b in
+            traverse f (concat acc result) remainder
+        end
+    in traverse f empty b
+;;
+
+let dmap f b1 b2 =
+    if (size b1) <> (size b2) then
+        raise (invalid_arg "Cannot map over two Binstrings of unequal lengths!\n");
+    let rec traverse f acc b1 b2 =
+        if (size b1) = 0 then acc
+        else begin
+            let msb1 = msbit b1 in
+            let msb2 = msbit b2 in
+            let result = f msb1 msb2 in
+            let r1 = remove_bits 1 b1 in
+            let r2 = remove_bits 1 b2 in
+            traverse f (concat acc result) r1 r2
+        end
+    in traverse f empty b1 b2
+;;
+
 let flip b =
     let upper_bound = (make (size b) (unsafe_b "1")) in
     b_xor b upper_bound

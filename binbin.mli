@@ -35,6 +35,13 @@ val concat : t -> t -> t
 
 val normalize : t -> t -> t * t
 
+
+val map : (t -> t) -> t -> t
+
+val mapi : (int -> t -> t) -> t -> t
+
+val dmap : (t -> t -> t) -> t -> t -> t
+
 val foldr : (t -> 'a -> 'a) -> t -> 'a -> 'a
 
 val foldl : ('a -> t -> 'a) -> 'a -> t -> 'a
