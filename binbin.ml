@@ -124,3 +124,25 @@ let to_int b =
         end
     in convert 0 str
 ;;
+
+let to_char b =
+    let code = to_int b in
+    (Char.chr code)
+;;
+
+let to_ascii b =
+    let s = (unsafe_s (byte_pad_left b)) in
+    let rec convert str binstr =
+        let len_str = (String.length binstr) in
+        if len_str = 0 then str
+        else begin
+            let byte = (String.sub binstr 0 8) in
+            let remainder = remove_str 8 binstr in
+            let binstr_byte = (to_int (unsafe_b byte)) in
+            let c = (Char.chr binstr_byte) in
+            let cs = (char_to_string c) in
+            convert (cs ^ str) remainder
+        end
+    in convert "" s
+;;
+
