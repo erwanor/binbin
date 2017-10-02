@@ -34,6 +34,11 @@ val concat : t -> t -> t
 
 
 val normalize : t -> t -> t * t
+
+val foldr : (t -> 'a -> 'a) -> t -> 'a -> 'a
+
+val foldl : ('a -> t -> 'a) -> 'a -> t -> 'a
+
 val unsafe_s : t -> string
 
 val unsafe_b : string -> t

@@ -162,6 +162,20 @@ let take i b =
         (char_bit_to_binstr s.[i-1])
 ;;
 
+let foldr f b acc =
+    let rec traverse pos f b acc =
+        if pos = 0 then acc
+        else (traverse (pos-1) f b (f (take pos b) acc))
+    in traverse (size b) f b acc
+;;
+
+let foldl f acc b =
+    let rec traverse pos f acc b =
+        if pos = (size b) then acc
+        else (traverse (pos+1) f (f acc (take pos b)) b)
+    in traverse 0 f acc b
+;;
+
 
 let msbit b =
     if (size b) = 0 then
