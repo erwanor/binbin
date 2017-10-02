@@ -11,6 +11,24 @@ let unsafe_b str = (Binstr str);;
 
 let size binstr = String.length (unsafe_s binstr);;
 
+let ipow n x = (float_of_int n) ** (float_of_int x) |> int_of_float;;
+
+let char_to_int c = if c = '0' then 0 else 1;;
+
+let char_to_string c = (String.make 1 c);;
+
+let remove_str k s =
+    let len = String.length s in
+    if len > k then (String.sub s k (len-k))
+    else ""
+;;
+ 
+let remove_bits i b =
+    let len = (size b) in
+    if len < i then
+        raise (invalid_arg "Illegal operation: cannot be asked to remove more bits than binstring size!\n")
+    else if i <= 0 then b
+    else (unsafe_b (String.sub (unsafe_s b) i (len-i)))
 let concat b1 b2 = (unsafe_b ((unsafe_s b1) ^ (unsafe_s b2)));;
 
 let of_int n =
