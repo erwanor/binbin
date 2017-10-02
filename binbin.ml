@@ -146,3 +146,11 @@ let to_ascii b =
     in convert "" s
 ;;
 
+
+let normalize b1 b2 =
+    let delta = (size b1) - (size b2) in
+    if delta = 0 then (b1, b2)
+    else if delta > 0 then (b1, (pad_left delta b2))
+    else ((pad_left (abs delta) b1), b2)
+;;
+

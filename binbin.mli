@@ -21,6 +21,8 @@ val pad_right : int -> t -> t
 
 val concat : t -> t -> t
 
+
+val normalize : t -> t -> t * t
 val unsafe_s : t -> string
 
 val unsafe_b : string -> t
