@@ -285,3 +285,16 @@ let reverse b =
         else rev (concat result (take pos b)) (pos - 1) b
     in rev empty (size b) b
 ;;
+
+let cardinality b =
+    let f = fun bit acc ->
+        if (is_bit_on bit) then (acc + 1)
+        else acc
+    in (of_int (foldr (f) b 0))
+;;
+
+let hamming_distance b1 b2 =
+    let padded_b1, padded_b2 = normalize b1 b2 in
+    let xored = b_xor padded_b1 padded_b2 in
+    cardinality xored
+;;

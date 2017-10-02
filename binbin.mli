@@ -42,6 +42,9 @@ val b_or : t -> t -> t
 
 val b_and : t -> t -> t
 
+val cardinality : t -> t
+
+val hamming_distance : t -> t -> t
 
 val map : (t -> t) -> t -> t
 
