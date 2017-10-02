@@ -278,3 +278,10 @@ let flip_bit_at target b =
         else bit
     in mapi flipper b
 ;;
+
+let reverse b =
+    let rec rev result pos b =
+        if pos = 0 then result
+        else rev (concat result (take pos b)) (pos - 1) b
+    in rev empty (size b) b
+;;

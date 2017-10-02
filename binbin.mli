@@ -32,6 +32,7 @@ val pad_right : int -> t -> t
 
 val concat : t -> t -> t
 
+val reverse : t -> t
 
 val normalize : t -> t -> t * t
 
