@@ -176,6 +176,16 @@ let foldl f acc b =
     in traverse 0 f acc b
 ;;
 
+let make i b =
+    let rec build pos i result model =
+        if pos >= i then result
+        else begin
+            let model_pos = (pos mod (size model))+1 in
+            let current = take model_pos model in
+            build (pos+1) i (concat result current) model
+        end
+    in build 0 i empty b
+;;
 
 let msbit b =
     if (size b) = 0 then
