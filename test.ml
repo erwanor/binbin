@@ -33,7 +33,7 @@ let test_fixture = "Binbin" >:::
         );
 
         "of_int" >:: ( fun test_ctx ->
-            (** Should add support for unsigned ints *)
+            (** Should add support for signed ints *)
             assert_equal (of_int 0) (unsafe_b "0");
             assert_equal (of_int 1) (unsafe_b "1");
             assert_equal (of_int 2) (unsafe_b "10");
@@ -137,6 +137,59 @@ let test_fixture = "Binbin" >:::
             assert_equal (flip_bit_at 8 one_byte) (of_int 254);
             assert_equal (flip_bit_at 4 zero_byte) (unsafe_b "00010000");
             assert_equal (flip_bit_at 4 one_byte) (of_int 239);
+        );
+
+        "pad_left" >:: (fun test_ctx ->
+            assert_equal (pad_left 0 empty) empty;
+            assert_equal (pad_left 0 zero_bit) zero_bit;
+            assert_equal (pad_left 0 one_bit) one_bit;
+            assert_equal (pad_left 8 empty) zero_byte;
+            assert_equal (pad_left 7 zero_bit) zero_byte;
+            assert_equal (pad_left 7 one_bit) (unsafe_b "00000001");
+            assert_equal (to_int (pad_left 7 one_bit)) (to_int one_bit);
+            assert_equal (to_int (pad_left 0 two_fifty_six_b)) (to_int two_fifty_six_b);
+            assert_equal (to_int (pad_left 100 two_fifty_six_b)) (to_int two_fifty_six_b);
+            assert_equal (to_int (pad_left 0 a_thousand_b)) (to_int a_thousand_b);
+            assert_equal (to_int (pad_left 8 a_thousand_b)) (to_int a_thousand_b);
+        );
+
+        "pad_right" >:: (fun test_ctx ->
+            assert_equal (pad_right 0 empty) empty; 
+            assert_equal (pad_right 0 zero_bit) zero_bit;
+            assert_equal (pad_right 0 one_bit) one_bit;
+            assert_equal (pad_right 8 empty) zero_byte; 
+            assert_equal (pad_right 7 zero_bit) zero_byte;
+            assert_equal (pad_right 1 one_bit) (of_int 2);
+            assert_equal (pad_right 3 one_bit) (of_int 8);
+            assert_equal (pad_right 17 one_bit) (of_int 131072);
+            assert_equal (pad_right 7 one_bit) (of_int 128);
+            assert_equal (pad_right 8 one_byte)  (of_int 65280);
+            assert_equal (pad_right 10 two_fifty_six_b) (of_int 262144);
+        );
+
+        "reverse" >:: (fun test_ctx ->
+            assert_equal (reverse empty) empty;
+            assert_equal (reverse zero_bit) zero_bit; 
+            assert_equal (reverse one_bit) one_bit;
+            assert_equal (reverse zero_byte) zero_byte;
+            assert_equal (reverse one_byte) one_byte;
+            assert_equal (to_int (reverse two_fifty_six_b)) 1;
+            assert_equal (to_int (reverse a_thousand_b)) 95;
+            assert_equal (to_int (reverse (reverse a_thousand_b))) 1000;
+        );
+
+        "normalize" >:: (fun test_ctx ->
+            let same_size tup_b = match tup_b with
+                | (b1, b2) -> (size b1) = (size b2)
+            in 
+            assert_equal (normalize empty empty) (empty, empty);
+            assert_equal (normalize one_bit one_bit) (one_bit, one_bit);
+            assert_equal (normalize zero_bit one_bit) (zero_bit, one_bit);
+            assert_equal (normalize zero_bit zero_byte) (zero_byte, zero_byte);
+            assert_equal (normalize one_byte zero_bit) (one_byte, zero_byte);
+            assert_equal (same_size (normalize zero_bit a_thousand_b)) true;
+            assert_equal (same_size (normalize a_thousand_b one_bit)) true;
+            assert_equal (same_size (normalize freedom_b quick_brown_fox_b)) true;
         );
 	]
 
