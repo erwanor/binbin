@@ -38,14 +38,14 @@ let remove_str k s =
 let remove_bits i b =
     let len = (size b) in
     if len < i then
-        raise (invalid_arg "Illegal operation: cannot be asked to remove more bits than binstring size!\n")
+        raise (invalid_arg "remove_bits: out-of-bound")
     else if i <= 0 then b
     else (unsafe_b (String.sub (unsafe_s b) i (len-i)))
 ;;
 
 let char_bit_to_binstr c =
     if c <> '0' && c <> '1' then
-        raise (invalid_arg "Invalid character bit!\n")
+        raise (invalid_arg "char_bit_to_binstr: invalid character bit")
     else unsafe_b (char_to_string c)
 ;;
 
@@ -196,13 +196,13 @@ let make i b =
 
 let msbit b =
     if (size b) = 0 then
-        raise (invalid_arg "Empty binary string!\n")
+        raise (invalid_arg "msbit: empty binary")
     else (take 1 b)
 ;;
 
 let lsbit b =
     if (size b) = 0 then
-        raise (invalid_arg "Empty binary string!\n")
+        raise (invalid_arg "lsbit: empty binary")
     else (take (size b) b)
 ;;
    
@@ -232,7 +232,7 @@ let map f b =
 
 let dmap f b1 b2 =
     if (size b1) <> (size b2) then
-        raise (invalid_arg "Cannot map over two Binstrings of unequal lengths!\n");
+        raise (invalid_arg "dmap: input binaries haven't been normalized");
     let rec traverse f acc b1 b2 =
         if (size b1) = 0 then acc
         else begin
