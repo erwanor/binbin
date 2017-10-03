@@ -104,7 +104,7 @@ let of_string s =
         else begin
             let c = remainder.[0] in
             let c_binstr = byte_pad_left (of_char c) in
-            let updated = (concat c_binstr binstr) in
+            let updated = (concat binstr c_binstr) in
             let r = remove_str 1 remainder in
             convert (pos+1) updated r
         end
@@ -141,7 +141,7 @@ let to_ascii b =
             let binstr_byte = (to_int (unsafe_b byte)) in
             let c = (Char.chr binstr_byte) in
             let cs = (char_to_string c) in
-            convert (cs ^ str) remainder
+            convert (str ^ cs) remainder
         end
     in convert "" s
 ;;
