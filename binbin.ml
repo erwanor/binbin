@@ -20,7 +20,7 @@ let is_bit_off bit = bit = (Binstr "0");;
 let distance_to_byte b =
     let len = size b in
     if len < 8 then (8 - len)
-    else (len mod 8)
+    else ((-1) * len) mod 8
 ;;
 
 let ipow n x = (float_of_int n) ** (float_of_int x) |> int_of_float;;
