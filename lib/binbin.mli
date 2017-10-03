@@ -60,3 +60,11 @@ val unsafe_s : t -> string
 
 val unsafe_b : string -> t
 
+(**
+ * TODO:
+     * implement add and sub and mult
+     * implement shift bits
+     * clean up api and re-org
+     * push on github
+     * think about float support
+     *)
