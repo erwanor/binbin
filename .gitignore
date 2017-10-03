@@ -1,3 +1,6 @@
+_build/
+*.install
+*.swp
 *.cmti
 *.cmxa
 *.cmxs
