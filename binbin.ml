@@ -131,19 +131,22 @@ let to_char b =
 ;;
 
 let to_ascii b =
-    let s = (unsafe_s (byte_pad_left b)) in
-    let rec convert str binstr =
-        let len_str = (String.length binstr) in
-        if len_str = 0 then str
-        else begin
-            let byte = (String.sub binstr 0 8) in
-            let remainder = remove_str 8 binstr in
-            let binstr_byte = (to_int (unsafe_b byte)) in
-            let c = (Char.chr binstr_byte) in
-            let cs = (char_to_string c) in
-            convert (str ^ cs) remainder
-        end
-    in convert "" s
+    if b = empty then ""
+    else begin
+        let s = (unsafe_s (byte_pad_left b)) in
+        let rec convert str binstr =
+            let len_str = (String.length binstr) in
+            if len_str = 0 then str
+            else begin
+                let byte = (String.sub binstr 0 8) in
+                let remainder = remove_str 8 binstr in
+                let binstr_byte = (to_int (unsafe_b byte)) in
+                let c = (Char.chr binstr_byte) in
+                let cs = (char_to_string c) in
+                convert (str ^ cs) remainder
+            end
+        in convert "" s
+    end
 ;;
 
 
@@ -155,8 +158,9 @@ let normalize b1 b2 =
 ;;
 
 let take i b =
-    if (size b) < i then
-        raise (invalid_arg "Out-of-bound: cannot take bit at provided index!\n")
+    if i = 0 then empty
+    else if (size b) < i then
+        raise (invalid_arg "take: out-of-bound bit fetched!\n")
     else
         let s = unsafe_s b in
         (char_bit_to_binstr s.[i-1])
@@ -177,14 +181,17 @@ let foldl f acc b =
 ;;
 
 let make i b =
-    let rec build pos i result model =
-        if pos >= i then result
-        else begin
-            let model_pos = (pos mod (size model))+1 in
-            let current = take model_pos model in
-            build (pos+1) i (concat result current) model
-        end
-    in build 0 i empty b
+    if (size b) = 0 || i = 0 then empty
+    else begin
+        let rec build pos i result model =
+            if pos >= i then result
+            else begin
+                let model_pos = (pos mod (size model))+1 in
+                let current = take model_pos model in
+                build (pos+1) i (concat result current) model
+            end
+        in build 0 i empty b
+    end 
 ;;
 
 let msbit b =
