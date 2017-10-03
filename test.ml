@@ -124,6 +124,20 @@ let test_fixture = "Binbin" >:::
             (** we need a deep equal *)
             assert_equal (flip two_fifty_six_b) (unsafe_b "011111111");
         );
+
+        "flip_bit_at" >:: (fun test_ctx ->
+            assert_equal (flip_bit_at 0 empty) empty;
+            assert_equal (flip_bit_at 0 zero_bit) zero_bit;
+            assert_equal (flip_bit_at 0 one_bit) one_bit;
+            assert_equal (flip_bit_at 0 zero_byte) zero_byte;
+            assert_equal (flip_bit_at 1 zero_bit) one_bit;
+            assert_equal (flip_bit_at 1 one_bit) zero_bit;
+            (** we really need a deep equal *)
+            assert_equal (flip_bit_at 8 zero_byte) (unsafe_b "00000001" );
+            assert_equal (flip_bit_at 8 one_byte) (of_int 254);
+            assert_equal (flip_bit_at 4 zero_byte) (unsafe_b "00010000");
+            assert_equal (flip_bit_at 4 one_byte) (of_int 239);
+        );
 	]
 
 let _ = run_test_tt_main test_fixture
