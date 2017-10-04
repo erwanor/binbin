@@ -2,6 +2,10 @@ type t = Binstr of string;;
 
 let empty = Binstr "";;
 
+let zero_b = Binstr "0";;
+
+let one_b = Binstr "1";;
+
 let unsafe_s binstr =
     match binstr with
     | (Binstr str) -> str
@@ -13,9 +17,9 @@ let size binstr = String.length (unsafe_s binstr);;
 
 (** UTILITIES AND HELPERS **) 
 
-let is_bit_on bit = bit = (Binstr "1");;
+let is_bit_on b = (b = one_b);; 
 
-let is_bit_off bit = bit = (Binstr "0");;
+let is_bit_off b = (b = zero_b);;
 
 let distance_to_byte b =
     let len = size b in
