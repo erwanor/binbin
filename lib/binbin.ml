@@ -169,8 +169,8 @@ let normalize b1 b2 =
 
 let take i b =
     if i = 0 then empty
-    else if (size b) < i then
-        raise (invalid_arg "take: out-of-bound bit fetched!\n")
+    else if i > (size b) then
+        raise (invalid_arg "take: out-of-bound")
     else
         let s = unsafe_s b in
         (char_bit_to_binstr s.[i-1])
