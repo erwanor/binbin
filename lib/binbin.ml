@@ -290,6 +290,35 @@ let flip_bit_at target b =
     in mapi flipper b
 ;;
 
+(** to_factor *)
+let find_first_one b =
+    let rec traverse pos b =
+        if pos >= (size b) then (pad_left (size b) (of_int pos))
+        else if (take pos b) = (one_b) then (of_int pos)
+        else traverse (pos+1) b
+    in traverse 0 b
+;;
+
+(** to_factor *)
+let count_leading_zeros b =
+    let rec traverse count pos b =
+        if pos >= (size b) then pad_left (size b) (of_int count)
+        else if (take pos b) = (one_b) then pad_left (size b) (of_int count)
+        else traverse (count+1) (pos+1) b
+    in traverse 0 1 b
+;;
+
+(** to_factor *)
+let count_trailing_zeros b =
+    let rec traverse count pos b =
+        if pos > (size b) then pad_left (size b) (of_int count)
+        else begin
+            if (take pos b) = zero_b then traverse (count+1) (pos+1) b
+            else traverse 0 (pos+1) b
+        end
+    in traverse 0 1 b
+;;
+
 let reverse b =
     let rec rev result pos b =
         if pos = 0 then result
