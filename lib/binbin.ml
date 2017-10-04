@@ -59,6 +59,7 @@ let char_bit_to_binstr c =
 (** IMPLEMENTATION **)
 let concat b1 b2 = (unsafe_b ((unsafe_s b1) ^ (unsafe_s b2)));;
 
+(** to_factor *)
 let pad_left k b =
     let bs = (unsafe_s b) in
     let rec pad k bs =
@@ -72,6 +73,7 @@ let byte_pad_left b =
     pad_left padding b
 ;;
 
+(** to_factor *)
 let pad_right k b =
     let bs = (unsafe_s b) in
     let rec pad k bs =
@@ -118,6 +120,7 @@ let of_string s =
     in (convert 0 empty s)
 ;;
 
+(** to_factor *)
 let to_int b =
     let str = (unsafe_s b) in
     let rec convert total remainder =
@@ -187,6 +190,7 @@ let foldl f acc b =
     in traverse 0 f acc b
 ;;
 
+(** to_factor *)
 let make i b =
     if (size b) = 0 || i = 0 then empty
     else begin
@@ -322,6 +326,7 @@ let count_trailing_zeros b =
     in traverse 0 1 b
 ;;
 
+(** to_factor *)
 let reverse b =
     let rec rev result pos b =
         if pos = 0 then result
@@ -329,6 +334,7 @@ let reverse b =
     in rev empty (size b) b
 ;;
 
+(** to_factor *)
 let cardinality b =
     let f = fun bit acc ->
         if (is_bit_on bit) then (acc + 1)
