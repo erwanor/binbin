@@ -283,10 +283,12 @@ let b_and b1 b2 =
     dmap anding padded_b1 padded_b2
 ;;
 
-let flip b =
+let b_not b =
     let upper_bound = (make (size b) (unsafe_b "1")) in
     b_xor b upper_bound
 ;;
+
+let flip b = b_not b;;
 
 let flip_bit_at target b =
     if target > (size b) then
