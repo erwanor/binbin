@@ -292,7 +292,7 @@ let flip b = b_not b;;
 
 let flip_bit_at target b =
     if target > (size b) then
-        raise (invalid_arg "Out-of-bound: bit at position cannot be flipped!\n");
+        raise (invalid_arg "flip_bit_at: out-of-bound");
     let flipper = fun index bit ->
         if target = (index+1) then (flip bit)
         else bit
