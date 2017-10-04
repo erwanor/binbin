@@ -13,6 +13,9 @@ let unsafe_s binstr =
 
 let unsafe_b str = (Binstr str);;
 
+(** to factor *)
+let init n = (Binstr (String.make n '0'));;
+
 let size binstr = String.length (unsafe_s binstr);;
 
 (** UTILITIES AND HELPERS **) 
