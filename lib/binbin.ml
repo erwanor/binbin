@@ -13,7 +13,6 @@ let unsafe_s binstr =
 
 let unsafe_b str = (Binstr str);;
 
-(** to factor *)
 let init n = (Binstr (String.make n '0'));;
 
 let size binstr = String.length (unsafe_s binstr);;
@@ -33,6 +32,8 @@ let distance_to_byte b =
 let ipow n x = (float_of_int n) ** (float_of_int x) |> int_of_float;;
 
 let char_to_int c = if c = '0' then 0 else 1;;
+
+let bin_to_int b = if b = zero_b then 0 else 1;;
 
 let char_to_string c = (String.make 1 c);;
 
@@ -59,13 +60,86 @@ let char_bit_to_binstr c =
 (** IMPLEMENTATION **)
 let concat b1 b2 = (unsafe_b ((unsafe_s b1) ^ (unsafe_s b2)));;
 
-(** to_factor *)
+let take i b =
+    if i = 0 then empty
+    else if i > (size b) then
+        raise (invalid_arg "take: out-of-bound")
+    else
+        let s = unsafe_s b in
+        (char_bit_to_binstr s.[i-1])
+;;
+
+let make i b =
+    if (size b) = 0 || i = 0 then empty
+    else begin
+        let rec build pos i result model =
+            if pos >= i then result
+            else begin
+                let model_pos = (pos mod (size model))+1 in
+                let current = take model_pos model in
+                build (pos+1) i (concat result current) model
+            end
+        in build 0 i empty b
+    end 
+;;
+
+let foldr f b acc =
+    let rec traverse pos f b acc =
+        if pos = 0 then acc
+        else (traverse (pos-1) f b (f (take pos b) acc))
+    in traverse (size b) f b acc
+;;
+
+let foldl f acc b =
+    let rec traverse pos f acc b =
+        if pos > (size b) then acc
+        else (traverse (pos+1) f (f acc (take pos b)) b)
+    in traverse 1 f acc b
+;;
+
+let map f b = foldr (fun x acc -> (concat (f x) acc)) b empty ;;
+
+let mapi f b =
+    let pos = ref 0 in
+    foldl (fun acc x ->
+        let result = (f !pos x) in
+        (pos := !pos + 1;
+         (concat acc result))) empty b
+;;
+
+let msbit b =
+    if (size b) = 0 then
+        raise (invalid_arg "msbit: empty binary")
+    else (take 1 b)
+;;
+
+let lsbit b =
+    if (size b) = 0 then
+        raise (invalid_arg "lsbit: empty binary")
+    else (take (size b) b)
+;;
+   
+
+let dmap f b1 b2 =
+    if (size b1) <> (size b2) then
+        raise (invalid_arg "dmap: input binaries haven't been normalized");
+    let rec traverse f acc b1 b2 =
+        if (size b1) = 0 then acc
+        else begin
+            let msb1 = msbit b1 in
+            let msb2 = msbit b2 in
+            let result = f msb1 msb2 in
+            let r1 = remove_bits 1 b1 in
+            let r2 = remove_bits 1 b2 in
+            traverse f (concat acc result) r1 r2
+        end
+    in traverse f empty b1 b2
+;;
+
+
 let pad_left k b =
-    let bs = (unsafe_s b) in
-    let rec pad k bs =
-        if k <= 0 then bs
-        else (pad (k-1) ("0" ^ bs))
-    in (unsafe_b (pad k bs))
+    let offset = (make k zero_b) in
+    (concat offset b)
 ;;
 
 let byte_pad_left b =
@@ -73,13 +147,9 @@ let byte_pad_left b =
     pad_left padding b
 ;;
 
-(** to_factor *)
 let pad_right k b =
-    let bs = (unsafe_s b) in
-    let rec pad k bs =
-        if k <= 0 then bs
-        else (pad (k-1) (bs ^ "0"))
-    in (unsafe_b (pad k bs))
+    let offset = (make k zero_b) in
+    (concat b offset)
 ;;
 
 let byte_pad_right b =
@@ -120,19 +190,15 @@ let of_string s =
     in (convert 0 empty s)
 ;;
 
-(** to_factor *)
 let to_int b =
-    let str = (unsafe_s b) in
-    let rec convert total remainder =
-        let len = (String.length remainder) in
-        if len = 0 then total
-        else begin
-            let coeff = (char_to_int remainder.[0]) in
-            let n = (ipow 2 (len-1)) * coeff in
-            let r = remove_str 1 remainder in
-            convert (n+total) r
-        end
-    in convert 0 str
+    let f = fun x acc ->
+        let coeff = bin_to_int x in
+        let exp = (List.length acc) in
+        let n = (ipow 2 exp) * coeff in
+        (n :: acc)
+    in
+    let partial = foldr f b [] in
+    List.fold_right (fun x acc -> x + acc) partial 0
 ;;
 
 let to_char b =
@@ -165,96 +231,6 @@ let normalize b1 b2 =
     if delta = 0 then (b1, b2)
     else if delta > 0 then (b1, (pad_left delta b2))
     else ((pad_left (abs delta) b1), b2)
-;;
-
-let take i b =
-    if i = 0 then empty
-    else if i > (size b) then
-        raise (invalid_arg "take: out-of-bound")
-    else
-        let s = unsafe_s b in
-        (char_bit_to_binstr s.[i-1])
-;;
-
-let foldr f b acc =
-    let rec traverse pos f b acc =
-        if pos = 0 then acc
-        else (traverse (pos-1) f b (f (take pos b) acc))
-    in traverse (size b) f b acc
-;;
-
-let foldl f acc b =
-    let rec traverse pos f acc b =
-        if pos = (size b) then acc
-        else (traverse (pos+1) f (f acc (take pos b)) b)
-    in traverse 0 f acc b
-;;
-
-(** to_factor *)
-let make i b =
-    if (size b) = 0 || i = 0 then empty
-    else begin
-        let rec build pos i result model =
-            if pos >= i then result
-            else begin
-                let model_pos = (pos mod (size model))+1 in
-                let current = take model_pos model in
-                build (pos+1) i (concat result current) model
-            end
-        in build 0 i empty b
-    end 
-;;
-
-let msbit b =
-    if (size b) = 0 then
-        raise (invalid_arg "msbit: empty binary")
-    else (take 1 b)
-;;
-
-let lsbit b =
-    if (size b) = 0 then
-        raise (invalid_arg "lsbit: empty binary")
-    else (take (size b) b)
-;;
-   
-let mapi f b =
-    let rec traverse f pos acc b =
-        if (size b) = 0 then acc
-        else begin
-            let bit = msbit b in
-            let result = f pos bit in
-            let remainder = remove_bits 1 b in
-            traverse f (pos+1) (concat acc result) remainder
-        end
-    in traverse f 0 empty b
-;;
-
-let map f b =
-    let rec traverse f acc b =
-        if (size b) = 0 then acc
-        else begin
-            let bit = msbit b in
-            let result = f bit in
-            let remainder = remove_bits 1 b in
-            traverse f (concat acc result) remainder
-        end
-    in traverse f empty b
-;;
-
-let dmap f b1 b2 =
-    if (size b1) <> (size b2) then
-        raise (invalid_arg "dmap: input binaries haven't been normalized");
-    let rec traverse f acc b1 b2 =
-        if (size b1) = 0 then acc
-        else begin
-            let msb1 = msbit b1 in
-            let msb2 = msbit b2 in
-            let result = f msb1 msb2 in
-            let r1 = remove_bits 1 b1 in
-            let r2 = remove_bits 1 b2 in
-            traverse f (concat acc result) r1 r2
-        end
-    in traverse f empty b1 b2
 ;;
 
 let logical_operation op =
@@ -299,7 +275,6 @@ let flip_bit_at target b =
     in mapi flipper b
 ;;
 
-(** to_factor *)
 let find_first_one b =
     let rec traverse pos b =
         if pos > (size b) then (pad_left (size b) (of_int 0))
@@ -308,7 +283,6 @@ let find_first_one b =
     in traverse 0 b
 ;;
 
-(** to_factor *)
 let count_leading_zeros b =
     let rec traverse count pos b =
         if pos > (size b) then pad_left (size b) (of_int count)
@@ -317,7 +291,6 @@ let count_leading_zeros b =
     in traverse 0 1 b
 ;;
 
-(** to_factor *)
 let count_trailing_zeros b =
     let rec traverse count pos b =
         if pos > (size b) then pad_left (size b) (of_int count)
@@ -334,15 +307,8 @@ let irreducible b =
     else remove_bits lz b
 ;;
 
-(** to_factor *)
-let reverse b =
-    let rec rev result pos b =
-        if pos = 0 then result
-        else rev (concat result (take pos b)) (pos - 1) b
-    in rev empty (size b) b
-;;
+let reverse b = foldr (fun x acc -> (concat acc x)) b empty;;
 
-(** to_factor *)
 let cardinality b =
     let f = fun bit acc ->
         if (is_bit_on bit) then (acc + 1)
