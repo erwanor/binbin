@@ -226,6 +226,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (hamming_distance b5 (flip_bit_at 7 b5)) (of_int 1);
             assert_equal (hamming_distance b7 (flip_bit_at 11 b7)) (of_int 1);
         );
+
         "find_first_one" >:: (fun test_ctx ->
             let b1 = (unsafe_b "00000010000") in
             let b2 = (unsafe_b "00000100010") in
@@ -272,6 +273,20 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (count_trailing_zeros b2))        1;
             assert_equal (to_int (count_trailing_zeros b3))        1;
             assert_equal (to_int (count_trailing_zeros b4))        10;
+        );
+
+        "irreducible" >:: (fun test_ctx ->
+            let b1 = (unsafe_b "0001000000001000") in
+            let b2 = (unsafe_b "0000000000000000") in
+            let b3 = (unsafe_b "0001110100101010") in
+            let b4 = (unsafe_b "1000000000000000") in
+            let i1 = (unsafe_b "1000000001000") in
+            let i3 = (unsafe_b "1110100101010") in
+            assert_equal (irreducible empty) empty;
+            assert_equal (irreducible b1) i1;
+            assert_equal (irreducible b2) b2;
+            assert_equal (irreducible b3) i3;
+            assert_equal (irreducible b4) b4;
         );
 	]
 
