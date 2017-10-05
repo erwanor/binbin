@@ -36,6 +36,8 @@ val reverse : t -> t
 
 val normalize : t -> t -> t * t
 
+val irreducible : t -> t
+
 val b_xor : t -> t -> t
 
 val b_or : t -> t -> t
