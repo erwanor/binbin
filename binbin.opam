@@ -10,5 +10,8 @@ dev-repo: "https://github.com/aaronwinter/binbin"
 build: [
   ["jbuilder" "build" "-p" name]
 ]
-build-test: [ [ "jbuilder" "runtest" ] ]
-depends: ["jbuilder" {build & >= "1.0+beta13"}]
+build-test: [ make "test" ] 
+depends: [
+  "jbuilder" {build & >= "1.0+beta13"}
+  "ounit" {test}
+]

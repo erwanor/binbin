@@ -1,6 +1,6 @@
 (executables
  ((names (test))
-  (libraries   (binbin ounit))
+  (libraries   (binbin oUnit))
 ))
 
 (alias

@@ -11,5 +11,5 @@ opam init
 opam update
 opam install ${OPAM_DEPENDS}
 eval `opam config env`
-make build
+make
 make test
