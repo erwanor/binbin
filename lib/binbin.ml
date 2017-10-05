@@ -328,6 +328,12 @@ let count_trailing_zeros b =
     in traverse 0 1 b
 ;;
 
+let irreducible b =
+    let lz = (to_int (count_leading_zeros b)) in
+    if lz = (size b) then b
+    else remove_bits lz b
+;;
+
 (** to_factor *)
 let reverse b =
     let rec rev result pos b =
