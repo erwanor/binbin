@@ -96,7 +96,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (take 7 a_thousand_b) one_bit;
         );
 
-        "make" >:: (fun test_ctx ->
+        "make" >:: ( fun test_ctx ->
             assert_equal (make 0 empty) empty;
             assert_equal (make 0 zero_bit) empty;
             assert_equal (make 0 zero_byte) empty;
@@ -115,7 +115,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (make 15 s_pattern_b) (unsafe_b "100110011001100");
         );
 
-        "flip" >:: (fun test_ctx ->
+        "flip" >:: ( fun test_ctx ->
             assert_equal (flip empty) empty;
             assert_equal (flip zero_bit) one_bit;
             assert_equal (flip one_bit) zero_bit;
@@ -125,7 +125,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (flip two_fifty_six_b) (unsafe_b "011111111");
         );
 
-        "flip_bit_at" >:: (fun test_ctx ->
+        "flip_bit_at" >:: ( fun test_ctx ->
             assert_equal (flip_bit_at 0 empty) empty;
             assert_equal (flip_bit_at 0 zero_bit) zero_bit;
             assert_equal (flip_bit_at 0 one_bit) one_bit;
@@ -139,7 +139,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (flip_bit_at 4 one_byte) (of_int 239);
         );
 
-        "pad_left" >:: (fun test_ctx ->
+        "pad_left" >:: ( fun test_ctx ->
             assert_equal (pad_left 0 empty) empty;
             assert_equal (pad_left 0 zero_bit) zero_bit;
             assert_equal (pad_left 0 one_bit) one_bit;
@@ -153,7 +153,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (pad_left 8 a_thousand_b)) (to_int a_thousand_b);
         );
 
-        "pad_right" >:: (fun test_ctx ->
+        "pad_right" >:: ( fun test_ctx ->
             assert_equal (pad_right 0 empty) empty; 
             assert_equal (pad_right 0 zero_bit) zero_bit;
             assert_equal (pad_right 0 one_bit) one_bit;
@@ -167,7 +167,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (pad_right 10 two_fifty_six_b) (of_int 262144);
         );
 
-        "reverse" >:: (fun test_ctx ->
+        "reverse" >:: ( fun test_ctx ->
             assert_equal (reverse empty) empty;
             assert_equal (reverse zero_bit) zero_bit; 
             assert_equal (reverse one_bit) one_bit;
@@ -178,7 +178,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (reverse (reverse a_thousand_b))) 1000;
         );
 
-        "normalize" >:: (fun test_ctx ->
+        "normalize" >:: ( fun test_ctx ->
             let same_size tup_b = match tup_b with
                 | (b1, b2) -> (size b1) = (size b2)
             in 
@@ -192,7 +192,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (same_size (normalize freedom_b quick_brown_fox_b)) true;
         );
 
-        "cardinality" >:: (fun test_ctx ->
+        "cardinality" >:: ( fun test_ctx ->
             assert_equal (cardinality empty) (of_int 0);
             assert_equal (cardinality zero_bit) (of_int 0);
             assert_equal (cardinality one_bit) (of_int 1);
@@ -203,7 +203,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (cardinality freedom_b) (of_int 30);
         );
 
-        "hamming_distance" >:: (fun test_ctx ->
+        "hamming_distance" >:: ( fun test_ctx ->
             let b1 = (of_string "the plane") in
             let b2 = (of_string "a car driving fast") in
             let b3 = (of_string "roses are red") in
@@ -227,7 +227,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (hamming_distance b7 (flip_bit_at 11 b7)) (of_int 1);
         );
 
-        "find_first_one" >:: (fun test_ctx ->
+        "find_first_one" >:: ( fun test_ctx ->
             let b1 = (unsafe_b "00000010000") in
             let b2 = (unsafe_b "00000100010") in
             let b3 = (unsafe_b "010") in
@@ -243,7 +243,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (find_first_one b4))        1;
         );
 
-        "count_leading_zeros" >:: (fun test_ctx ->
+        "count_leading_zeros" >:: ( fun test_ctx ->
             let b1 = (unsafe_b "00000010000") in
             let b2 = (unsafe_b "00000100010") in
             let b3 = (unsafe_b "010") in
@@ -259,7 +259,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (count_leading_zeros b4))        0;
         );
 
-        "count_trailing_zeros" >:: (fun test_ctx ->
+        "count_trailing_zeros" >:: ( fun test_ctx ->
             let b1 = (unsafe_b "00000010000") in
             let b2 = (unsafe_b "00000100010") in
             let b3 = (unsafe_b "010") in
@@ -275,7 +275,7 @@ let test_fixture = "Binbin" >:::
             assert_equal (to_int (count_trailing_zeros b4))        10;
         );
 
-        "irreducible" >:: (fun test_ctx ->
+        "irreducible" >:: ( fun test_ctx ->
             let b1 = (unsafe_b "0001000000001000") in
             let b2 = (unsafe_b "0000000000000000") in
             let b3 = (unsafe_b "0001110100101010") in
