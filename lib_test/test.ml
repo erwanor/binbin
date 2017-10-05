@@ -191,6 +191,41 @@ let test_fixture = "Binbin" >:::
             assert_equal (same_size (normalize a_thousand_b one_bit)) true;
             assert_equal (same_size (normalize freedom_b quick_brown_fox_b)) true;
         );
+
+        "cardinality" >:: (fun test_ctx ->
+            assert_equal (cardinality empty) (of_int 0);
+            assert_equal (cardinality zero_bit) (of_int 0);
+            assert_equal (cardinality one_bit) (of_int 1);
+            assert_equal (cardinality zero_byte) (of_int 0);
+            assert_equal (cardinality one_byte) (of_int 8);
+            assert_equal (cardinality two_fifty_six_b) (of_int 1);
+            assert_equal (cardinality a_thousand_b) (of_int 6);
+            assert_equal (cardinality freedom_b) (of_int 30);
+        );
+
+        "hamming_distance" >:: (fun test_ctx ->
+            let b1 = (of_string "the plane") in
+            let b2 = (of_string "a car driving fast") in
+            let b3 = (of_string "roses are red") in
+            let b4 = (of_string "polynomial") in
+            let b5 = (of_string "Jean-Baptiste Say") in
+            let b6 = (of_string "this is a test") in
+            let b7 = (of_string "wokka wokka!!!") in
+            assert_equal (hamming_distance b1 b1) (of_int 0);
+            assert_equal (hamming_distance b5 b5) (of_int 0);
+            assert_equal (hamming_distance b7 b7) (of_int 0);
+            assert_equal (hamming_distance empty b1) (of_int 31);
+            assert_equal (hamming_distance b1 b2) (of_int 46);
+            assert_equal (hamming_distance b2 b3) (of_int 49);
+            assert_equal (hamming_distance b3 b4) (of_int 41);
+            assert_equal (hamming_distance b4 b5) (of_int 48); 
+            assert_equal (hamming_distance b5 b6) (of_int 53);
+            assert_equal (hamming_distance b6 b7) (of_int 37);
+            assert_equal (hamming_distance b1 (flip_bit_at 2 b1)) (of_int 1);
+            assert_equal (hamming_distance b3 (flip_bit_at 5 b3)) (of_int 1);
+            assert_equal (hamming_distance b5 (flip_bit_at 7 b5)) (of_int 1);
+            assert_equal (hamming_distance b7 (flip_bit_at 11 b7)) (of_int 1);
+        );
         "find_first_one" >:: (fun test_ctx ->
             let b1 = (unsafe_b "00000010000") in
             let b2 = (unsafe_b "00000100010") in
