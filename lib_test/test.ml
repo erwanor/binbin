@@ -191,6 +191,53 @@ let test_fixture = "Binbin" >:::
             assert_equal (same_size (normalize a_thousand_b one_bit)) true;
             assert_equal (same_size (normalize freedom_b quick_brown_fox_b)) true;
         );
+        "find_first_one" >:: (fun test_ctx ->
+            let b1 = (unsafe_b "00000010000") in
+            let b2 = (unsafe_b "00000100010") in
+            let b3 = (unsafe_b "010") in
+            let b4 = (unsafe_b "10000000000") in
+            assert_equal (to_int (find_first_one empty))     0;
+            assert_equal (to_int (find_first_one zero_bit))  0;
+            assert_equal (to_int (find_first_one one_bit))   1;
+            assert_equal (to_int (find_first_one zero_byte)) 0;
+            assert_equal (to_int (find_first_one one_byte))  1;
+            assert_equal (to_int (find_first_one b1))        7;
+            assert_equal (to_int (find_first_one b2))        6;
+            assert_equal (to_int (find_first_one b3))        2;
+            assert_equal (to_int (find_first_one b4))        1;
+        );
+
+        "count_leading_zeros" >:: (fun test_ctx ->
+            let b1 = (unsafe_b "00000010000") in
+            let b2 = (unsafe_b "00000100010") in
+            let b3 = (unsafe_b "010") in
+            let b4 = (unsafe_b "10000000000") in
+            assert_equal (to_int (count_leading_zeros empty))     0;
+            assert_equal (to_int (count_leading_zeros zero_bit))  1;
+            assert_equal (to_int (count_leading_zeros one_bit))   0;
+            assert_equal (to_int (count_leading_zeros zero_byte)) 8;
+            assert_equal (to_int (count_leading_zeros one_byte))  0;
+            assert_equal (to_int (count_leading_zeros b1))        6;
+            assert_equal (to_int (count_leading_zeros b2))        5;
+            assert_equal (to_int (count_leading_zeros b3))        1;
+            assert_equal (to_int (count_leading_zeros b4))        0;
+        );
+
+        "count_trailing_zeros" >:: (fun test_ctx ->
+            let b1 = (unsafe_b "00000010000") in
+            let b2 = (unsafe_b "00000100010") in
+            let b3 = (unsafe_b "010") in
+            let b4 = (unsafe_b "10000000000") in
+            assert_equal (to_int (count_trailing_zeros empty))     0;
+            assert_equal (to_int (count_trailing_zeros zero_bit))  1;
+            assert_equal (to_int (count_trailing_zeros one_bit))   0;
+            assert_equal (to_int (count_trailing_zeros zero_byte)) 8;
+            assert_equal (to_int (count_trailing_zeros one_byte))  0;
+            assert_equal (to_int (count_trailing_zeros b1))        4;
+            assert_equal (to_int (count_trailing_zeros b2))        1;
+            assert_equal (to_int (count_trailing_zeros b3))        1;
+            assert_equal (to_int (count_trailing_zeros b4))        10;
+        );
 	]
 
 let _ = run_test_tt_main test_fixture
