@@ -1,7 +1,6 @@
 OPAM_DEPENDS="ounit"
 
-
-ppa=avsm/ocaml44+opam12
+ppa=avsm/ocaml42+opam120
 
 echo "yes" | sudo add-apt-repository ppa:$ppa
 sudo apt-get update -qq
