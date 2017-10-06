@@ -288,6 +288,34 @@ let test_fixture = "Binbin" >:::
             assert_equal (irreducible b3) i3;
             assert_equal (irreducible b4) b4;
         );
+
+        "map" >:: ( fun test_ctx ->
+            let id x = x in
+            assert_equal (map id empty) empty;
+            assert_equal (map id zero_bit) zero_bit;
+            assert_equal (map id one_bit) one_bit;
+            assert_equal (map id zero_byte) zero_byte;
+            assert_equal (map id one_byte) one_byte;
+            assert_equal (map id two_fifty_six_b) two_fifty_six_b;
+            assert_equal (map id two_fifty_six_b) two_fifty_six_b;
+            assert_equal (map flip empty) empty;
+            assert_equal (map flip zero_bit) one_bit;
+            assert_equal (map flip one_bit) zero_bit;
+            assert_equal (map flip zero_byte) one_byte;
+            assert_equal (map flip one_byte) zero_byte;
+        );
+        
+        "mapi" >:: ( fun test_ctx ->
+            let id i x = (of_int (i mod 2)) in
+            let byte_b = (unsafe_b "01010101") in
+            let two_fifty_six_id_b  = (unsafe_b "010101010") in
+            assert_equal (mapi id empty) empty;
+            assert_equal (mapi id zero_bit) zero_bit;
+            assert_equal (mapi id one_bit) zero_bit;
+            assert_equal (mapi id zero_byte) byte_b;
+            assert_equal (mapi id one_byte) byte_b;
+            assert_equal (mapi id two_fifty_six_b) two_fifty_six_id_b;
+        );
 	]
 
 let _ = run_test_tt_main test_fixture
