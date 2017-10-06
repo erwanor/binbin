@@ -91,11 +91,14 @@ let foldl f acc b =
 let map f b = foldr (fun x acc -> (concat (f x) acc)) b empty 
 
 let mapi f b =
-    let pos = ref 0 in
-    foldl (fun acc x ->
-        let result = (f !pos x) in
-        (pos := !pos + 1;
-         (concat acc result))) empty b
+    if b = empty then empty
+    else begin
+        let pos = ref 0 in
+        foldl (fun acc x ->
+            let result = (f !pos x) in
+            (pos := !pos + 1;
+             (concat acc result))) empty b
+    end
 
 let msbit b =
     if (size b) = 0 then
