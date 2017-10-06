@@ -1,19 +1,19 @@
-open OUnit2;;
-open Binbin;;
+open OUnit2
+open Binbin
 
-let empty = (unsafe_b "");;
-let zero_bit = (unsafe_b "0");;
-let zero_byte = (unsafe_b "00000000");;
-let one_bit = (unsafe_b "1");;
-let one_byte = (unsafe_b "11111111");;
-let two_fifty_six_b = (unsafe_b "100000000");;
-let a_thousand_b = (unsafe_b "1111101000");;
-let freedom = "freedom";;
-let freedom_b = (unsafe_b "01100110011100100110010101100101011001000110111101101101");;
-let quick_brown_fox = "the quick brown fox!";;
-let quick_brown_fox_b = (unsafe_b "0111010001101000011001010010000001110001011101010110100101100011011010110010000001100010011100100110111101110111011011100010000001100110011011110111100000100001");;
-let f_pattern_b = (unsafe_b "110");;
-let s_pattern_b = (unsafe_b "1001");;
+let empty = (unsafe_b "")
+let zero_bit = (unsafe_b "0")
+let zero_byte = (unsafe_b "00000000")
+let one_bit = (unsafe_b "1")
+let one_byte = (unsafe_b "11111111")
+let two_fifty_six_b = (unsafe_b "100000000")
+let a_thousand_b = (unsafe_b "1111101000")
+let freedom = "freedom"
+let freedom_b = (unsafe_b "01100110011100100110010101100101011001000110111101101101")
+let quick_brown_fox = "the quick brown fox!"
+let quick_brown_fox_b = (unsafe_b "0111010001101000011001010010000001110001011101010110100101100011011010110010000001100010011100100110111101110111011011100010000001100110011011110111100000100001")
+let f_pattern_b = (unsafe_b "110")
+let s_pattern_b = (unsafe_b "1001")
 
 let test_fixture = "Binbin" >:::
     [
