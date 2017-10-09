@@ -150,6 +150,17 @@ let test_fixture = "Binbin" >:::
             assert_equal (msbit a_thousand_b) one_bit;
         );
 
+        "lsbit" >:: ( fun test_ctx ->
+            let invalid_lsbit = (fun () -> (lsbit empty)) in
+            assert_raises (Invalid_argument "lsbit: empty binary") invalid_lsbit;
+            assert_equal (lsbit zero_bit) zero_bit;
+            assert_equal (lsbit one_bit) one_bit;
+            assert_equal (lsbit zero_byte) zero_bit;
+            assert_equal (lsbit one_byte) one_bit;
+            assert_equal (lsbit two_fifty_six_b) zero_bit;
+            assert_equal (lsbit a_thousand_b) zero_bit;
+        );
+
         "pad_left" >:: ( fun test_ctx ->
             assert_equal (pad_left 0 empty) empty;
             assert_equal (pad_left 0 zero_bit) zero_bit;
