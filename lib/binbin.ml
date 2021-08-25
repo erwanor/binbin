@@ -14,11 +14,9 @@ let init n = String.make n '0'
 
 let size binstr = String.length (unsafe_s binstr)
 
-(** UTILITIES AND HELPERS **) 
+(** UTILITIES AND HELPERS **)
 
-let is_bit_on b = (b = one_b) 
-
-let is_bit_off b = (b = zero_b)
+let is_bit_on b = (b = one_b)
 
 let distance_to_byte b =
     let len = size b in
@@ -37,7 +35,7 @@ let remove_str k s =
     let len = String.length s in
     if len > k then String.sub s k (len-k)
     else ""
- 
+
 let remove_bits i b =
     let len = (size b) in
     if len < i then
@@ -73,7 +71,7 @@ let make i b =
                 build (pos+1) i (concat result current) model
             end
         in build 0 i empty b
-    end 
+    end
 
 let foldr f b acc =
     let rec traverse pos f b acc =
@@ -88,7 +86,7 @@ let foldl f acc b =
         else (traverse (pos+1) f (f acc (take pos b)) b)
     in traverse 1 f acc b
 
-let map f b = foldr (fun x acc -> (concat (f x) acc)) b empty 
+let map f b = foldr (fun x acc -> (concat (f x) acc)) b empty
 
 let mapi f b =
     if b = empty then empty
@@ -136,10 +134,6 @@ let byte_pad_left b =
 let pad_right k b =
     let offset = (make k zero_b) in
     concat b offset
-
-let byte_pad_right b =
-    let padding = distance_to_byte b in
-    pad_right padding b
 
 let of_int n =
     let reduce_int i = if i = 0 then 0 else 1 in
@@ -219,7 +213,7 @@ let logical_operation op =
 let b_xor b1 b2 =
     let padded_b1, padded_b2 = normalize b1 b2 in
     let xoring = logical_operation (lxor) in
-    dmap xoring padded_b1 padded_b2 
+    dmap xoring padded_b1 padded_b2
 
 let b_or b1 b2 =
     let padded_b1, padded_b2 = normalize b1 b2 in

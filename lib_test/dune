@@ -1,0 +1,11 @@
+(executables
+ (modes byte exe)
+ (names test)
+ (libraries binbin oUnit))
+
+(rule
+ (alias runtest)
+ (deps
+  (:< test.exe))
+ (action
+  (run %{<} -runner sequential)))
