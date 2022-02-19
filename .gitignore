@@ -1,14 +1,3 @@
 _build/
-*.install
-*.swp
-*.cmti
-*.cmxa
-*.cmxs
-*.cmp
-*.cm[iaoxt]
 
 lib_test/old/tst
-
-lib_test/.merlin
-
-lib/.merlin

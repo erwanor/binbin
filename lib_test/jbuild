@@ -1,9 +1,0 @@
-(executables
- ((names (test))
-  (libraries   (binbin oUnit))
-))
-
-(alias
- ((name    runtest)
-  (deps    (test.exe))
-  (action  (run ${<} -runner sequential))))
